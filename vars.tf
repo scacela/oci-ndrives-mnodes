@@ -9,3 +9,7 @@ variable "bv_device_paths_to_add" {
     "/dev/oracleoci/oraclevdi",
     "/dev/oracleoci/oraclevdj"]
 }
+variable "ssh_private_key_bastion" {}
+variable "public_ip_bastion" {}
+variable "user_bastion" {}
+variable "compartment_ocid" {}
