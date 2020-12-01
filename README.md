@@ -33,7 +33,7 @@ terraform init                                    # initialize Terraform in the 
 terraform plan                                    # show the deployment plan before applying
 terraform apply                                   # apply the deployment plan, enter 'yes' when prompted
 </pre>
-- Access your nodes once they have been attached, then verify the ISCSI-level block volume attachment(s) on the nodes:
+- Access your nodes once they have been attached, then verify the ISCSI-level block volume attachment(s) on the non-bastion nodes:
 <pre>
 sudo iscsiadm -m node                             # list the ISCSI nodes
 </pre>
