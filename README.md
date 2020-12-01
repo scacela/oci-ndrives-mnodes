@@ -16,10 +16,10 @@ git clone https://github.com/scacela/oci-ndrives-mnodes.git # get the project
 - create a file for your environment variables with extension .sh in the same directory as vars.tf and populate it with TF\_VAR\_ variables. For example:
 <pre>
 export TF_VAR_compartment_ocid=<compartment ocid where non-bastion nodes exist and where block volume(s) will be deployed>
-export TF_VAR_region=<region identifier of region where Terraform actions will be implemented>
-export TF_VAR_ssh_private_key_bastion=$(cat <bastion node private ssh key>)
-export TF_VAR_ssh_private_key_non_bastion=$(cat <non-bastion node private ssh key>)
-export TF_VAR_public_ip_bastion="<bastion node public ip address>"
+export TF_VAR_region=&ltregion identifier of region where Terraform actions will be implemented&gt
+export TF_VAR_ssh_private_key_bastion=$(cat &ltbastion node private ssh key&gt)
+export TF_VAR_ssh_private_key_non_bastion=$(cat &ltnon-bastion node private ssh key&gt)
+export TF_VAR_public_ip_bastion="&ltbastion node public ip address&gt"
 </pre>
 - for deploying the project, run the following commands:
 <pre>
