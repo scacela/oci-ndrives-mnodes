@@ -33,7 +33,7 @@ terraform init                                    # initialize Terraform in the 
 terraform plan                                    # show the deployment plan before applying
 terraform apply                                   # apply the deployment plan, enter 'yes' when prompted
 </pre>
-- Access your nodes once they have been attached, then verify the attachment on the nodes:
+- Access your nodes once they have been attached, then verify the ISCSI-level attachment on the nodes:
 <pre>
 sudo iscsiadm -m node                             # list the ISCSI nodes
 </pre>
