@@ -3,7 +3,7 @@
 Attach n drives to m nodes.
 
 - Provisions a block volume for each device path specified (n)
-- Attaches each block volume at the ISCSI level to the compute instances whose display names match a regular expression (m)
+- Attaches each block volume at the ISCSI level to the (m) compute instances whose display names match a regular expression
 
 Prerequisites:
 - 1 bastion node
