@@ -48,13 +48,104 @@ resource "null_resource" "storage_nodes" {
     }
 }
 
+resource "null_resource" "execute_iscsi_commands" {
+  depends_on = [null_resource.make_iscsi_files]
+
+  provisioner "file" {
+    content     = format("%s\n", var.ssh_private_key_non_bastion) # newline or formatting will be off
+    destination = "/home/opc/.ssh/nodes.key"
+    connection {
+      host        = var.public_ip_bastion
+      type        = "ssh"
+      user        = "opc"
+      private_key = var.ssh_private_key_bastion
+    }
+  }
+
+  provisioner "file" {
+    source        = "${path.root}/ansible"
+    destination   = "/home/opc/"
+    connection {
+      host        = var.public_ip_bastion
+      type        = "ssh"
+      user        = "opc"
+      private_key = var.ssh_private_key_bastion
+    }
+  }
+
+  # copy playbooks folder to bastion
+  provisioner "file" {
+    source        = "${path.root}/playbooks"
+    destination   = "/home/opc/"
+    connection {
+      host        = var.public_ip_bastion
+      type        = "ssh"
+      user        = "opc"
+      private_key = var.ssh_private_key_bastion
+    }
+  }
+
+  # copy inventory file to bastion into playbooks folder
+  provisioner "file" {
+    content = templatefile("${path.root}/inventory.tpl", {  
+    storage_nodes = data.oci_core_instance.storage_node.*.private_ip
+    })
+    destination   = "/home/opc/playbooks/inventory"
+    connection {
+      host        = var.public_ip_bastion
+      type        = "ssh"
+      user        = "opc"
+      private_key = var.ssh_private_key_bastion
+    }
+  }
+
+  # make hosts file on bastion so can check for when ssh is available on non-bastion nodes
+  provisioner "file" {
+    content     = join("\n", data.oci_core_instance.storage_node.*.private_ip)
+    destination = "/tmp/hosts"
+    connection {
+      host        = var.public_ip_bastion
+      type        = "ssh"
+      user        = "opc"
+      private_key = var.ssh_private_key_bastion
+    }
+  }
+
+  # copy configure.sh to bastion
+  provisioner "file" {
+    source      = "${path.root}/configure.sh"
+    destination = "/tmp/configure.sh"
+    connection {
+      host        = var.public_ip_bastion
+      type        = "ssh"
+      user        = "opc"
+      private_key = var.ssh_private_key_bastion
+    }
+  }
+
+  # run configure.sh on bastion, which will invoke the Ansible
+  provisioner "remote-exec" {
+    inline = [
+      "chmod 600 /home/opc/.ssh/nodes.key", # set protective permissions or key won't be used
+      "chmod a+x /tmp/configure.sh",
+      "/tmp/configure.sh"
+    ]
+    connection {
+      host        = var.public_ip_bastion
+      type        = "ssh"
+      user        = "opc"
+      private_key = var.ssh_private_key_bastion
+    }
+  }
+}
+
 data "oci_core_instance" "storage_node" {
     count = length(data.oci_core_instances.storage_nodes.instances)
     #Required
     instance_id = data.oci_core_instances.storage_nodes.instances[count.index].id
 }
 
-resource "null_resource" "remote-exec" {
+resource "null_resource" "make_iscsi_files" {
     depends_on = [oci_core_volume_attachment.bv_attachment]
     count = length(var.bv_device_paths_to_add) * length(data.oci_core_instances.storage_nodes.instances) 
     #Required

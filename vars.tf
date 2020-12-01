@@ -9,7 +9,9 @@ variable "bv_device_paths_to_add" {
     "/dev/oracleoci/oraclevdi",
     "/dev/oracleoci/oraclevdj"]
 }
+variable "user_bastion" {default = "opc"}
 variable "ssh_private_key_bastion" {}
+variable "ssh_private_key_non_bastion" {}
 variable "public_ip_bastion" {}
-variable "user_bastion" {}
 variable "compartment_ocid" {}
+variable "region" {} # necessary as an environment variable, written here for clarity

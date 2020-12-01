@@ -1,0 +1,14 @@
+---
+- name: ISCSI config
+  hosts: all
+  remote_user: opc
+  tasks:
+    - name: Copy ISCSI command files from local to remote
+      copy:
+        src: "/home/opc/iscsi_commands_{{ hostvars[inventory_hostname]['ansible_default_ipv4']['address'] }}.sh"
+        dest: /home/opc
+    - name: Execute commands in ISCSI command files on remote
+      command: "{{item}}"
+      with_items:
+        - "chmod 755 /home/opc/iscsi_commands_{{ hostvars[inventory_hostname]['ansible_default_ipv4']['address'] }}.sh"
+        - "bash /home/opc/iscsi_commands_{{ hostvars[inventory_hostname]['ansible_default_ipv4']['address'] }}.sh"
