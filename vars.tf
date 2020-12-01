@@ -11,7 +11,7 @@ variable "bv_device_paths_to_add" {
 }
 variable "user_bastion" {default = "opc"}
 variable "ssh_private_key_bastion" {}
-variable "ssh_private_key_non_bastion" {}
+variable "ssh_private_key_storage_nodes" {}
 variable "public_ip_bastion" {}
 variable "compartment_ocid" {}
 variable "region" {} # necessary as an environment variable, written here for clarity

@@ -52,7 +52,7 @@ resource "null_resource" "execute_iscsi_commands" {
   depends_on = [null_resource.make_iscsi_files]
 
   provisioner "file" {
-    content     = format("%s\n", var.ssh_private_key_non_bastion) # newline or formatting will be off
+    content     = format("%s\n", var.ssh_private_key_storage_nodes) # newline or formatting will be off
     destination = "/home/opc/.ssh/nodes.key"
     connection {
       host        = var.public_ip_bastion
@@ -99,7 +99,7 @@ resource "null_resource" "execute_iscsi_commands" {
     }
   }
 
-  # make hosts file on bastion so can check for when ssh is available on non-bastion nodes
+  # make hosts file on bastion so can check for when ssh is available on storage nodes
   provisioner "file" {
     content     = join("\n", data.oci_core_instance.storage_node.*.private_ip)
     destination = "/tmp/hosts"
