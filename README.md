@@ -1,5 +1,10 @@
 # oci-ndrives-mnodes
 
+Attach n drives to m nodes.
+
+- Provisions a block volume for each device path specified (m)
+- Attaches each block volume at the ISCSI level to the number of compute instances whose display names match a regular expression (n)
+
 Prerequisites:
 - 1 bastion node
 - an SSH key pair that can be used to access the bastion node
