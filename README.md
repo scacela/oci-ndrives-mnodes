@@ -1,6 +1,6 @@
 # oci-ndrives-mnodes
 
-Attach n drives to m nodes.
+Attach n drives to m nodes in OCI.
 
 - Provisions a Block Volume for each device path specified (n)
 - Attaches each Block Volume at the ISCSI level to the (m) Compute Instances whose display names match a regular expression
